@@ -1,5 +1,5 @@
-Monoplan : ./obj/liste.o ./obj/main.obj
-	gcc -o Monoplan ./obj/liste.o ./obj/main.obj
+Monoplan : ./obj/liste.o ./obj/main.o
+	gcc -o Monoplan ./obj/liste.o ./obj/main.o
 
 ./obj/main.o : ./src/main.c ./include/liste.h
 	gcc -c ./src/main.c -o ./obj/main.o

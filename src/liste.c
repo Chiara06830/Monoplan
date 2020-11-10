@@ -1,12 +1,14 @@
-#include "../include/liste.h"
 #include <stdlib.h>
+#include <stdio.h>
+
+#include "../include/liste.h"
 
 //création d'une nouvelle liste vide
 node_t * list_create(){
-    node_t node;
+    node_t * node = (node_t *)malloc(sizeof(node_t));
     //une liste vide est représenté par un pointeur NULL
-    node.suivant = NULL;
-    return &node;
+    node->suivant = NULL;
+    return node;
 }
 
 //lire ou écrire la donnée d'un noeud
@@ -26,22 +28,24 @@ node_t * list_next(node_t * node){
 //creation et insertion d'un noeud en tete de liste
 //retourne la tete de liste
 node_t * list_insert(node_t * head, void * data){
-    node_t node;
-    node.valeur = data;
-    node.suivant = head;
-    return &node;
+    node_t * node = (node_t *)malloc(sizeof(node_t));
+    node->valeur = data;
+    node->suivant = head;
+    return node;
 }
 
 //création et insertion d'un noeud en queue de liste
 //retourne la tete de liste
 node_t * list_append(node_t * head, void * data){
-    node_t node;
-    node.valeur = data;
-    node.suivant = NULL;
+    node_t * node = (node_t *)malloc(sizeof(node_t));
+    node->valeur = data;
+    node->suivant = NULL;
 
     for(node_t * n=head; n->suivant!=NULL; n=n->suivant){
+        printf("%p\t%p\n",n , n->suivant);
         if(n->suivant==NULL){//si c'est le dernier
-            n->suivant = &node;
+            //n->suivant = node;
+            break;
         }
     }
 
@@ -51,7 +55,7 @@ node_t * list_append(node_t * head, void * data){
 //suppression de la première instance d'une donnée dans la liste
 //retourne la tete de liste
 node_t * list_remove(node_t * head, void * data){
-    node_t * precedent;
+    node_t * precedent = (node_t *)malloc(sizeof(node_t));
     for(node_t * n=head; n->suivant!=NULL; n=n->suivant){
         if(n->valeur == data){ //si on trouve la valeur
             if(n == head){//si c'est le premier élément

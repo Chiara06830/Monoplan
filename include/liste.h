@@ -5,7 +5,7 @@
 */
 typedef struct node{
     void * valeur;
-    node_t * suivant;
+    struct node * suivant;
 } node_t;
 
 //création d'une nouvelle liste vide
