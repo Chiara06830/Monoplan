@@ -5,7 +5,10 @@
 
 //création d'une nouvelle liste vide
 node_t * list_create(){
-    node_t * node = (node_t *)malloc(sizeof(node_t));
+    node_t * node;
+    if( (node = (node_t *)malloc(sizeof(node_t))) == NULL){
+        return NULL;
+    }
     //une liste vide est représenté par un pointeur NULL
     node->suivant = NULL;
     return node;
@@ -28,7 +31,7 @@ node_t * list_next(node_t * node){
 //creation et insertion d'un noeud en tete de liste
 //retourne la tete de liste
 node_t * list_insert(node_t * head, void * data){
-    node_t * node = (node_t *)malloc(sizeof(node_t));
+    node_t * node = list_create();
     node->valeur = data;
     node->suivant = head;
     return node;
@@ -37,14 +40,13 @@ node_t * list_insert(node_t * head, void * data){
 //création et insertion d'un noeud en queue de liste
 //retourne la tete de liste
 node_t * list_append(node_t * head, void * data){
-    node_t * node = (node_t *)malloc(sizeof(node_t));
+    node_t * node = list_create();
     node->valeur = data;
     node->suivant = NULL;
 
-    for(node_t * n=head; n->suivant!=NULL; n=n->suivant){
-        printf("%p\t%p\n",n , n->suivant);
+    for(node_t * n=head; n!=NULL; n=n->suivant){
         if(n->suivant==NULL){//si c'est le dernier
-            //n->suivant = node;
+            n->suivant = node;
             break;
         }
     }

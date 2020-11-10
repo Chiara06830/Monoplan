@@ -32,16 +32,20 @@ int main(){
         return 1;
     }
 
-    printf("%p\t%p\t%p\n", head, head->suivant, head->suivant->suivant);
-
     //ajout noeud a la fin
     int dataFin = 3;
     int * pDataFin = &dataFin;
     head = list_append(head, pDataFin);
-    if(list_get_data(head->suivant->suivant->valeur) != pDataFin){
+    /*if(list_get_data(head->suivant->suivant->suivant->valeur) != pDataFin){
         printf("ERREURE : %d au lieu de 3", list_get_data(head->suivant->suivant->valeur));
         return 1;
-    }
+    }*/
+
+    printf("%p\t%p\t%p\t%p\n", head, head->suivant, head->suivant->suivant, head->suivant->suivant->suivant);
+
+    ////------------------Suppression------------------
+    head = list_remove(head, pData);
+    printf("\n%p\t%p\t%p\n", head, head->suivant, head->suivant->suivant);
 
     return 0;
 }
