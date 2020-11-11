@@ -1,5 +1,12 @@
+/****************************************************************
+    Nom du fichier : liste.c
+=================================================================
+    Description : fonctions de traitement des liste de node_t
+=================================================================
+    Auteur : C. RELEVAT
+****************************************************************/
+
 #include <stdlib.h>
-#include <stdio.h>
 
 #include "../include/liste.h"
 
@@ -57,7 +64,7 @@ node_t * list_append(node_t * head, void * data){
 //suppression de la première instance d'une donnée dans la liste
 //retourne la tete de liste
 node_t * list_remove(node_t * head, void * data){
-    node_t * precedent = (node_t *)malloc(sizeof(node_t));
+    node_t * precedent = list_create();
     for(node_t * n=head; n->suivant!=NULL; n=n->suivant){
         if(n->valeur == data){ //si on trouve la valeur
             if(n == head){//si c'est le premier élément
@@ -87,5 +94,7 @@ node_t * list_headRemove(node_t * head){
 //destruction d'une liste
 //(La libération des données n'est pas prise en charge)
 void list_destroy(node_t * head){
-    
+    for(node_t * n=head; n->suivant!=NULL; n=n->suivant){
+        free(n);
+    }
 }
