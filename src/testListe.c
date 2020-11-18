@@ -43,7 +43,7 @@ int main(){
         return 1;
     }
     
-    /*La liste chainé contient 1 noeud qui a la valeure :
+    /*La liste chainé contient 1 noeud qui a la valeur :
     1*/
 
     //------------------Test Creation------------------
@@ -90,7 +90,7 @@ int main(){
         return 1;
     }
 
-    /*La liste chainé contient 1 noeud qui a la valeure :
+    /*La liste chainé contient 1 noeud qui a la valeur :
     3*/
 
     //destrcution de la liste

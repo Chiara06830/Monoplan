@@ -18,6 +18,7 @@ node_t * list_create(){
     }
     //une liste vide est représenté par un pointeur NULL
     node->suivant = NULL;
+    node->valeur = NULL;
     return node;
 }
 

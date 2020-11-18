@@ -3,7 +3,7 @@
 -------------------------------------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>
-#include "stack.h"
+#include "../include/stack.h"
 
 #define SIZE 5
 int main(void) {
