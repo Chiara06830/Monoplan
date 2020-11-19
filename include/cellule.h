@@ -1,5 +1,5 @@
-#include "liste.h"
 #include "stack.h"
+#include "liste.h"
 
 typedef struct cell{
     char * saisie; //saisie de l'utilisateur

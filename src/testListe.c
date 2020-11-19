@@ -9,16 +9,17 @@
 #include <stdio.h>
 
 #include "../include/liste.h"
+#include "../include/test.h"
 
 /*===============================================================
-    Nom de la fonction : main
+    Nom de la fonction : testListe
 -----------------------------------------------------------------
     Description : verification des fonctions du module "Liste"
 -----------------------------------------------------------------
     Valeur renvoyee en cas d'erreur : 1
 ===============================================================*/
 
-int main(){
+int testListe(){
     printf("\n//----------DEBUT TESTES MODULE LISTE----------//\n");
 
     //Création du premier noeud

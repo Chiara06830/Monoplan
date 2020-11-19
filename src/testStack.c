@@ -4,9 +4,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/stack.h"
+#include "../include/test.h"
 
 #define SIZE 5
-int main(void) {
+int testStack() {
+	printf("\n//----------DEBUT TESTES STACK----------//\n");
+
 	int pos;
 	double val, val_pile;
 	my_stack_t * s = STACK_CREATE(SIZE,double);
@@ -56,6 +59,6 @@ int main(void) {
 
 	STACK_REMOVE(s);
 	
-	printf("Fin du test de la pile\n");
+	printf("//-----------FIN TESTES STACK-----------//\n\n");
 	return 0;
 }
