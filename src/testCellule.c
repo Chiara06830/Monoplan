@@ -11,7 +11,7 @@ int testCellule(){
     s_cell * vide = create_cellule("");
     s_cell * nombreP = create_cellule("12.8");
     s_cell * nombreN = create_cellule("-46.78");
-    s_cell * formule = create_cellule("= -3.2 5.0 + 4 * 8.12 /");
+    s_cell * formule = create_cellule("= 3.2 5.0 + 4 * 8.12 /");
 
     //------------------Test lecture------------------
     //lecture d'une chaine de caractère
