@@ -95,7 +95,7 @@ void division(my_stack_t *stack){
     double total = STACK_POP(stack, double);
     while(!STACK_EMPTY(stack)){
         double valeur = STACK_POP(stack, double);
-        if(fabs(valeur, 0.0) > 0.00001)
+        if(fabs(valeur - 0.0) > 0.00001)
             total /= valeur;
     }
     STACK_PUSH(stack , total, double);
@@ -143,6 +143,7 @@ s_token * lecture_token(char * token, s_cell * cell){
         jeton->type = REF;
         s_cell * ref = trouver_cell(token, cell);
         jeton->value.ref = ref;
+        ref->listeCellule = list_insert(ref->listeCellule, cell);
         STACK_PUSH(stack, ref->valeur, double);
     }
     //si c'est un operateur
@@ -184,7 +185,6 @@ s_cell * lecture_cellule(s_cell * cell){
         //on decoupe en petit bout et on les parcours
         token = strtok(str, delim);
         while(token != NULL){
-            printf("%s\n", token);
             cell->listeJetons = list_insert(cell->listeJetons, lecture_token(token, cell));
             token = strtok(NULL, delim);
         }
@@ -199,6 +199,11 @@ s_cell * lecture_cellule(s_cell * cell){
     return cell;
 }
 
-s_cell * eval_cellule(s_cell cell){
+s_cell * eval_cellule(s_cell * cell){
+    while(cell->listeJetons->suivant != NULL){
+        //MOI JE VEUT LE TYPE DU JETON
+        printf("%s\n", cell->listeJetons->valeur);
 
+        cell->listeJetons = list_next(cell->listeJetons);
+    }
 }

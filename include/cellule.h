@@ -43,3 +43,5 @@ s_cell * create_cellule(char * saisie, char * coor);
  * ----------------------------------------------------
  */
 s_cell * lecture_cellule(s_cell * cell);
+
+s_cell * eval_cellule(s_cell * cell);

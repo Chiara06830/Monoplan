@@ -46,6 +46,7 @@ int testCellule(){
 
     //lecture d'une formule
     formule = lecture_cellule(formule);
+    formule = eval_cellule(formule);
 
     //lecture d'une formule avec des références
     reference = lecture_cellule(reference);
