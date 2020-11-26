@@ -2,6 +2,7 @@
 #include "liste.h"
 
 typedef struct cell{
+    char * coordonnees; //(exemple B34)
     char * saisie; //saisie de l'utilisateur
     double valeur; //valeur numérique de la saisie
     node_t * listeJetons; //jetons construits a partir de l'analyse de la formule
@@ -19,12 +20,26 @@ typedef struct token {
     }value ;
 }s_token;
 
-//créer la cellule
-s_cell * create_cellule(char * saisie);
+/* ---------------------------------------------------
+ * Créer un cellule et l'ajoute a la liste des cellules
+ * ---------------------------------------------------
+ * saisie   : chaine de caractère entrée dans la cellule
+ * coor		: coordonnées de la cellule (ex: A01)
+ * ---------------------------------------------------
+ * retourne une cellule avec une valeur egale a 0
+ * ----------------------------------------------------
+ */
+s_cell * create_cellule(char * saisie, char * coor);
 
-//analyse la chaine de caractères associée à une cellule 
-//(le contenu de la cellule)
+/* ---------------------------------------------------
+ * analyse la chaine de caractères associée à une cellule 
+ * (le contenu de la cellule)
+ * ---------------------------------------------------
+ * cell		: Cellule que l'on veut lire
+ * ---------------------------------------------------
+ * retourne la cellule avec sa valeur, sa liste de 
+ * jetons et sa liste de cellules remplies
+ * NULL si il y a ovreflow
+ * ----------------------------------------------------
+ */
 s_cell * lecture_cellule(s_cell * cell);
-
-//évalue une cellule unique
-s_cell * eval_cellule(s_cell * cell);

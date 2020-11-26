@@ -7,11 +7,13 @@ int testCellule(){
     printf("\n//----------DEBUT TESTES MODULE CELLULE----------//\n");
 
     //création des cellules
-    s_cell * text = create_cellule("Bonjour");
-    s_cell * vide = create_cellule("");
-    s_cell * nombreP = create_cellule("12.8");
-    s_cell * nombreN = create_cellule("-46.78");
-    s_cell * formule = create_cellule("= 3.2 5.0 + 4 * 8.12 /");
+    s_cell * text = create_cellule("Bonjour", "A12");
+    s_cell * vide = create_cellule("", "B48");
+    s_cell * nombreP = create_cellule("12.8", "D32");
+    s_cell * nombreN = create_cellule("-46.78", "A01");
+    s_cell * formule = create_cellule("= 3.2 5.0 + 4 * 8.12 /", "J46");
+    s_cell * reference = create_cellule("= D32 A01 + ", "J39");
+    s_cell * refInconnu = create_cellule("= K21 S36 +", "G04");
 
     //------------------Test lecture------------------
     //lecture d'une chaine de caractère
@@ -44,6 +46,13 @@ int testCellule(){
 
     //lecture d'une formule
     formule = lecture_cellule(formule);
+
+    //lecture d'une formule avec des références
+    reference = lecture_cellule(reference);
+
+    //lecture d'une formule avec des références 
+    //qui ne font pas partie de la liste
+    reference = lecture_cellule(reference);
 
     printf("//-----------FIN TESTES MODULE LISTE-----------//\n\n");
 }
