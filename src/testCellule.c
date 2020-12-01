@@ -11,7 +11,7 @@ int testCellule(){
     s_cell * vide = create_cellule("", "B48");
     s_cell * nombreP = create_cellule("12.8", "D32");
     s_cell * nombreN = create_cellule("-46.78", "A01");
-    s_cell * formule = create_cellule("= 3.2 5.0 + 4 * 8.12 /", "J46");
+    s_cell * formule = create_cellule("= 3.2 5.0 + 4.0 * 8.12 / &", "J46");
     s_cell * reference = create_cellule("= D32 A01 + ", "J39");
     s_cell * refInconnu = create_cellule("= K21 S36 +", "G04");
 
@@ -47,13 +47,14 @@ int testCellule(){
     //lecture d'une formule
     formule = lecture_cellule(formule);
     formule = eval_cellule(formule);
+    //double res = formule->valeur;
 
     //lecture d'une formule avec des références
     reference = lecture_cellule(reference);
 
     //lecture d'une formule avec des références 
     //qui ne font pas partie de la liste
-    reference = lecture_cellule(reference);
+    refInconnu = lecture_cellule(refInconnu);
 
     printf("//-----------FIN TESTES MODULE LISTE-----------//\n\n");
 }

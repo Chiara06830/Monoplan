@@ -84,6 +84,7 @@ s_cell * trouver_cell(char * coor, s_cell * cell){
  * ---------------------------------------------------
  */
 void multiplication(my_stack_t *stack){
+    printf("mult\n");
     double total = 1;
     while(!STACK_EMPTY(stack)){
         total *= STACK_POP(stack, double);
@@ -92,6 +93,7 @@ void multiplication(my_stack_t *stack){
 }
 
 void division(my_stack_t *stack){
+    printf("div\n");
     double total = STACK_POP(stack, double);
     while(!STACK_EMPTY(stack)){
         double valeur = STACK_POP(stack, double);
@@ -102,6 +104,7 @@ void division(my_stack_t *stack){
 }
 
 void adition(my_stack_t *stack){
+    printf("add\n");
     double total = 0;
     while(!STACK_EMPTY(stack)){
         total += STACK_POP(stack, double);
@@ -110,6 +113,7 @@ void adition(my_stack_t *stack){
 }
 
 void soustraction(my_stack_t *stack){
+    printf("moins\n");
     double total = 0;
     while(!STACK_EMPTY(stack)){
         total -= STACK_POP(stack, double);
@@ -129,32 +133,29 @@ void soustraction(my_stack_t *stack){
  */
 s_token * lecture_token(char * token, s_cell * cell){
     s_token * jeton = create_jeton();
-    my_stack_t * stack = stack_create(20, sizeof(double));
 
     //si c'est une value
     double number = strtod(token, NULL);
     if(number > 0.0){
         jeton->type = VALUE;
         jeton->value.cst = number;
-        STACK_PUSH(stack, number, double);
     }
     //si c'est une reference
     else if((*token>='A'&& *token<='Z')  && (*(token+1)>='0'&& *(token+1)<='9') && (*(token+2)>='0'&& *(token+2)<='9')){
         jeton->type = REF;
         s_cell * ref = trouver_cell(token, cell);
         jeton->value.ref = ref;
-        ref->listeCellule = list_insert(ref->listeCellule, cell);
-        STACK_PUSH(stack, ref->valeur, double);
+        ref->listeCellule = list_append(ref->listeCellule, cell);
     }
     //si c'est un operateur
-    else if(strcmp(token, "*") || strcmp(token, "/") || strcmp(token, "+") || strcmp(token, "-")){
+    else{
         jeton->type = OPERATOR;
-        if(strcmp(token, "*")) jeton->value.operator = &multiplication;
-        else if(strcmp(token, "/")) jeton->value.operator = &division;
-        else if(strcmp(token, "+")) jeton->value.operator = &adition;
-        else if(strcmp(token, "-")) jeton->value.operator = &soustraction;
-    }else {
-        return NULL;
+        printf("%s\n", token);
+        if(*token == 42) jeton->value.operator = &multiplication;
+        else if(*token == 47) jeton->value.operator = &division;
+        else if(*token == 43) jeton->value.operator = &adition;
+        else if(*token == 45) jeton->value.operator = &soustraction;
+        else return NULL; // si ca ne correspond a rien
     }
     
     return jeton;
@@ -184,8 +185,9 @@ s_cell * lecture_cellule(s_cell * cell){
         char * token;
         //on decoupe en petit bout et on les parcours
         token = strtok(str, delim);
+        token = strtok(NULL, delim);
         while(token != NULL){
-            cell->listeJetons = list_insert(cell->listeJetons, lecture_token(token, cell));
+            cell->listeJetons = list_append(cell->listeJetons, lecture_token(token, cell));
             token = strtok(NULL, delim);
         }
     }else {
@@ -200,10 +202,23 @@ s_cell * lecture_cellule(s_cell * cell){
 }
 
 s_cell * eval_cellule(s_cell * cell){
-    while(cell->listeJetons->suivant != NULL){
-        //MOI JE VEUT LE TYPE DU JETON
-        printf("%s\n", cell->listeJetons->valeur);
+    my_stack_t * stack = stack_create(20, sizeof(double));
 
+    cell->listeJetons = list_next(cell->listeJetons);
+    while(cell->listeJetons->suivant != NULL){
+        s_token * jeton = cell->listeJetons->valeur;
+        if(jeton->type == VALUE){
+            STACK_PUSH(stack, jeton->value.cst, double);
+        }else if(jeton->type == REF){
+            STACK_PUSH(stack, jeton->value.ref->valeur, double);
+        }else if(jeton->type == OPERATOR){
+            jeton->value.operator(stack);
+        }
         cell->listeJetons = list_next(cell->listeJetons);
     }
+
+    double total = STACK_POP(stack, double);
+    printf("-- %f\n", total);
+    cell->valeur = total;
+    printf("%d\n", cell->valeur);
 }
