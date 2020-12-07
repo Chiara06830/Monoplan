@@ -4,7 +4,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "cellule.h"
+#include "../include/cellule.h"
 
 extern node_t * listCellules;
 
