@@ -3,20 +3,17 @@
 #include "../include/graphe.h"
 
 void calculDegNeg(s_cell * papa){
+    papa = lecture_cellule(papa);
     node_t * liste = papa->listeCellule;
-    printf("%s -> ", papa->coordonnees);
     while(liste->valeur != NULL){
         s_cell * fils = (s_cell*) list_get_data(liste);
         fils->degNeg = papa->degNeg + 1;
-        printf("%s : %d\n", fils->coordonnees, fils->degNeg);
         calculDegNeg(fils);
         liste = list_next(liste);
     }
 }
 
 void eval_graphe(s_cell * cell) {
-    cell = lecture_cellule(cell);
-    
     //INITIALISATION
     calculDegNeg(cell);
 
@@ -28,7 +25,7 @@ void eval_graphe(s_cell * cell) {
     while(graphe->suivant != NULL){
         //recupère la tête du graphe et l'évalue
         s_cell * couranteCell = (s_cell*) list_get_data(graphe);
-        graphe = list_next(graphe);
+        graphe = list_headRemove(graphe);
         printf("-- %p\n", graphe);
         eval_cellule(couranteCell);
 
