@@ -4,7 +4,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "../include/cellule.h"
+#include "cellule.h"
 
 extern node_t * listCellules;
 
@@ -23,13 +23,13 @@ s_cell * create_cellule(char * saisie, char * coor){
         return NULL;
     }
 
-    cell->coordonnees = coor;
+    cell->coordonnees = strdup(coor);
     cell->saisie = saisie;
     cell->valeur = 0.0;
-    cell ->listeJetons = list_create();
-    cell ->listeCellule = list_create();
+    cell->listeJetons = list_create();
+    cell->listeCellule = list_create();
 
-    //ajouter la cellules a la liste 
+    //ajouter la cellules a la liste
     listCellules = list_insert(listCellules, cell);
 
     return cell;
@@ -69,7 +69,6 @@ s_cell * trouver_cell(char * coor, s_cell * cell){
     for(node_t * n=listCellules; n->suivant!=NULL; n=n->suivant){
         s_cell * cell = n->valeur;
         if(!strcmp(cell->coordonnees, coor)){//si c'est la meme
-            listCellules = list_insert(listCellules, cell);
             return cell;
         }
     }
@@ -80,11 +79,10 @@ s_cell * trouver_cell(char * coor, s_cell * cell){
 /* ---------------------------------------------------
  * multiplie les valeurs dans la pile
  * ---------------------------------------------------
- * coor		: coordonnées de la cellule (ex: A01)
+ * stack : la pile avec les valeurs a multiplier
  * ---------------------------------------------------
  */
 void multiplication(my_stack_t *stack){
-    printf("mult\n");
     double total = 1;
     while(!STACK_EMPTY(stack)){
         total *= STACK_POP(stack, double);
@@ -92,19 +90,26 @@ void multiplication(my_stack_t *stack){
     STACK_PUSH(stack , total, double);
 }
 
+/* ---------------------------------------------------
+ * divise les valeurs dans la pile
+ * ---------------------------------------------------
+ * stack : la pile avec les valeurs a diviser
+ * ---------------------------------------------------
+ */
 void division(my_stack_t *stack){
-    printf("div\n");
+    double valeur = STACK_POP(stack, double);
     double total = STACK_POP(stack, double);
-    while(!STACK_EMPTY(stack)){
-        double valeur = STACK_POP(stack, double);
-        if(fabs(valeur - 0.0) > 0.00001)
-            total /= valeur;
-    }
+    total = total / valeur;
     STACK_PUSH(stack , total, double);
 }
 
+/* ---------------------------------------------------
+ * additionne les valeurs dans la pile
+ * ---------------------------------------------------
+ * stack : la pile avec les valeurs a additionner
+ * ---------------------------------------------------
+ */
 void adition(my_stack_t *stack){
-    printf("add\n");
     double total = 0;
     while(!STACK_EMPTY(stack)){
         total += STACK_POP(stack, double);
@@ -112,12 +117,16 @@ void adition(my_stack_t *stack){
     STACK_PUSH(stack , total, double);
 }
 
+/* ---------------------------------------------------
+ * soustrait les valeurs dans la pile
+ * ---------------------------------------------------
+ * stack : la pile avec les valeurs a soustraire
+ * ---------------------------------------------------
+ */
 void soustraction(my_stack_t *stack){
-    printf("moins\n");
-    double total = 0;
-    while(!STACK_EMPTY(stack)){
-        total -= STACK_POP(stack, double);
-    }
+    double valeur = STACK_POP(stack, double);
+    double total = STACK_POP(stack, double);
+    total = total - valeur;
     STACK_PUSH(stack , total, double);
 }
 
@@ -145,40 +154,39 @@ s_token * lecture_token(char * token, s_cell * cell){
         jeton->type = REF;
         s_cell * ref = trouver_cell(token, cell);
         jeton->value.ref = ref;
-        ref->listeCellule = list_append(ref->listeCellule, cell);
+        cell->listeCellule = list_append(ref->listeCellule, ref);
     }
     //si c'est un operateur
     else{
         jeton->type = OPERATOR;
-        printf("%s\n", token);
         if(*token == 42) jeton->value.operator = &multiplication;
         else if(*token == 47) jeton->value.operator = &division;
         else if(*token == 43) jeton->value.operator = &adition;
         else if(*token == 45) jeton->value.operator = &soustraction;
-        else return NULL; // si ca ne correspond a rien
+        else return create_jeton();
     }
-    
+
     return jeton;
 }
 
 /* ---------------------------------------------------
- * analyse la chaine de caractères associée à une cellule 
+ * analyse la chaine de caractères associée à une cellule
  * (le contenu de la cellule)
  * ---------------------------------------------------
  * cell		: Cellule que l'on veut lire
  * ---------------------------------------------------
- * retourne la cellule avec sa valeur, sa liste de 
+ * retourne la cellule avec sa valeur, sa liste de
  * jetons et sa liste de cellules remplies
  * NULL si il y a ovreflow
  * ----------------------------------------------------
  */
 s_cell * lecture_cellule(s_cell * cell){
     double value;
-    
+
     //si c'est une formule
     if(*(cell->saisie) == '='){
         //on met la saisie dans un tableau
-        char str[80]; 
+        char str[80];
         strcpy(str, cell->saisie);
         //on initilaise le delimiteur et le token
         const char delim[2] = " ";
@@ -201,24 +209,37 @@ s_cell * lecture_cellule(s_cell * cell){
     return cell;
 }
 
-s_cell * eval_cellule(s_cell * cell){
-    my_stack_t * stack = stack_create(20, sizeof(double));
+/* ---------------------------------------------------
+ * evalue la valeur de la cellule a partir de sa
+ * liste de token
+ * ---------------------------------------------------
+ * cell		: Cellule que l'on veut evaluer
+ * ---------------------------------------------------
+ * retourne la cellule avec la valeur egal au resultat
+ * du calcul
+ * ----------------------------------------------------
+ */
 
-    cell->listeJetons = list_next(cell->listeJetons);
-    while(cell->listeJetons->suivant != NULL){
-        s_token * jeton = cell->listeJetons->valeur;
-        if(jeton->type == VALUE){
-            STACK_PUSH(stack, jeton->value.cst, double);
-        }else if(jeton->type == REF){
-            STACK_PUSH(stack, jeton->value.ref->valeur, double);
-        }else if(jeton->type == OPERATOR){
-            jeton->value.operator(stack);
-        }
+s_cell * eval_cellule(s_cell * cell){
+    if(cell->listeJetons->suivant != NULL){
+        my_stack_t * stack = stack_create(20, sizeof(double));
+
         cell->listeJetons = list_next(cell->listeJetons);
+        while(cell->listeJetons->suivant != NULL){
+            s_token * jeton = cell->listeJetons->valeur;
+            if(jeton->type == VALUE){
+                STACK_PUSH(stack, jeton->value.cst, double);
+            }else if(jeton->type == REF){
+                STACK_PUSH(stack, jeton->value.ref->valeur, double);
+            }else if(jeton->type == OPERATOR){
+                jeton->value.operator(stack);
+            }
+            cell->listeJetons = list_next(cell->listeJetons);
+        }
+
+        cell->valeur = STACK_POP(stack, double);
+        stack_remove(stack);
     }
 
-    double total = STACK_POP(stack, double);
-    printf("-- %f\n", total);
-    cell->valeur = total;
-    printf("%d\n", cell->valeur);
+    return cell;
 }

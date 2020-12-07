@@ -18,7 +18,7 @@ Permet de créer et manipulé une liste chainé de void *.
 ### Module Cellules
 Composé de  :
 - cellule.h
--  cellule.c
+- cellule.c
 - testCellule.c
 
 Lit le contenu d'une cellule et effectue le calcul quand s'en est un.

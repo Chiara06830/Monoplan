@@ -32,16 +32,26 @@ typedef struct token {
 s_cell * create_cellule(char * saisie, char * coor);
 
 /* ---------------------------------------------------
- * analyse la chaine de caractères associée à une cellule 
+ * analyse la chaine de caractères associée à une cellule
  * (le contenu de la cellule)
  * ---------------------------------------------------
  * cell		: Cellule que l'on veut lire
  * ---------------------------------------------------
- * retourne la cellule avec sa valeur, sa liste de 
+ * retourne la cellule avec sa valeur, sa liste de
  * jetons et sa liste de cellules remplies
  * NULL si il y a ovreflow
  * ----------------------------------------------------
  */
 s_cell * lecture_cellule(s_cell * cell);
 
+/* ---------------------------------------------------
+ * evalue la valeur de la cellule a partir de sa
+ * liste de token
+ * ---------------------------------------------------
+ * cell		: Cellule que l'on veut evaluer
+ * ---------------------------------------------------
+ * retourne la cellule avec la valeur egal au resultat
+ * du calcul
+ * ----------------------------------------------------
+ */
 s_cell * eval_cellule(s_cell * cell);

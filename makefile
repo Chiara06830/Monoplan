@@ -1,5 +1,5 @@
 Monoplan : ./obj/liste.o ./obj/testListe.o ./obj/stack.o ./obj/testStack.o ./obj/cellule.o ./obj/testCellule.o ./obj/main.o
-	gcc -o Monoplan ./obj/liste.o ./obj/cellule.o ./obj/stack.o ./obj/testCellule.o ./obj/testListe.o ./obj/testStack.o ./obj/main.o
+	gcc ./obj/liste.o ./obj/cellule.o ./obj/stack.o ./obj/testCellule.o ./obj/testListe.o ./obj/testStack.o ./obj/main.o -o Monoplan -lm
 
 ./obj/testStack.o : ./src/testStack.c ./include/stack.h
 	gcc -c ./src/testStack.c -o ./obj/testStack.o
