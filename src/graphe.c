@@ -1,55 +1,53 @@
 #include <stdio.h>
 
-#include "graphe.h"
+#include "../include/graphe.h"
+
+void calculDegNeg(s_cell * papa){
+    node_t * liste = papa->listeCellule;
+    printf("%s -> ", papa->coordonnees);
+    while(liste->valeur != NULL){
+        s_cell * fils = (s_cell*) list_get_data(liste);
+        fils->degNeg = papa->degNeg + 1;
+        printf("%s : %d\n", fils->coordonnees, fils->degNeg);
+        calculDegNeg(fils);
+        liste = list_next(liste);
+    }
+}
 
 void eval_graphe(s_cell * cell) {
     cell = lecture_cellule(cell);
+    
     //INITIALISATION
-    int nbSommet = 0;
-    node_t * liste;
-    for(liste=cell->listeCellule; liste->suivant!=NULL; liste=liste->suivant){
-        printf("%p\n", liste->suivant);
-        nbSommet++;
-    }
-    int dNeg[nbSommet];
+    calculDegNeg(cell);
 
-    printf("nb sommet = %d\n", nbSommet);
+    //créer un sous graphe qui ne contient qu'une cellule
+    node_t * graphe = list_create();
+    graphe = list_insert(graphe, cell);
 
-    /*// pour chaque sommet du graphe
-    int i=0;
-    for(n=cell->listeCellule; n->suivant!=NULL; n=n->suivant){
-        s_cell * cellule = n->valeur;
-        int nbPred = 0;
-        //pour chacun de leur predeceseur
-         for(node_t * n2=cellule->listeCellule; n2->suivant!=NULL; n2=n2->suivant) {
-            nbPred++;
-         }
-         dNeg[i] = nbPred;
-         i++;
-    }
+    //ITERATION (tri topologique)
+    while(graphe->suivant != NULL){
+        //recupère la tête du graphe et l'évalue
+        s_cell * couranteCell = (s_cell*) list_get_data(graphe);
+        graphe = list_next(graphe);
+        printf("-- %p\n", graphe);
+        eval_cellule(couranteCell);
 
-    printf("nb sommet = %d\n", nbSommet);
-
-    //ITERATION
-    if(nbSommet = 0) return;
-
-    //evaluation de la cellule
-    cell = eval_cellule(cell);
-
-    //pour chaque successeur
-    i=0;
-    for(n=cell->listeCellule; n->suivant!=NULL; n=n->suivant) {
-        //reduire dNeg
-        dNeg[i] = dNeg[i]-1;
-        if(dNeg[i] == 0){
-            eval_graphe(n->valeur);
+        //recupère la liste des successeur
+        node_t * fils = couranteCell->listeCellule;
+        s_cell * noeud = (s_cell*)list_get_data(fils);
+        //pour chaque succeseur on reduit le degre negatif
+        while(fils->suivant != NULL){
+            noeud->degNeg = noeud->degNeg - 1;
+            if(noeud->degNeg == 0){//si on a fini de traiter le noeud
+                printf("%s\n", noeud->coordonnees);
+                graphe = list_insert(graphe, noeud);
+                fils = list_next(fils);
+            }
+            noeud = (s_cell*)list_get_data(fils);
         }
-        i++;
-    }*/
 
-    /*
-    b <- c
-    b = c d *
-    c->liste = b
-    */
+        list_destroy(fils);
+    }
+
+    list_destroy(graphe);
 }

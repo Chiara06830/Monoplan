@@ -5,6 +5,7 @@ typedef struct cell{
     char * coordonnees; //(exemple B34)
     char * saisie; //saisie de l'utilisateur
     double valeur; //valeur numérique de la saisie
+    int degNeg; //degrée négatif du noeud dans le graphe 
     node_t * listeJetons; //jetons construits a partir de l'analyse de la formule
     node_t * listeCellule; //cellules dépendantes de celle ci
 }s_cell;

@@ -26,6 +26,7 @@ s_cell * create_cellule(char * saisie, char * coor){
     cell->coordonnees = strdup(coor);
     cell->saisie = saisie;
     cell->valeur = 0.0;
+    cell->degNeg = 0;
     cell->listeJetons = list_create();
     cell->listeCellule = list_create();
 
@@ -154,7 +155,7 @@ s_token * lecture_token(char * token, s_cell * cell){
         jeton->type = REF;
         s_cell * ref = trouver_cell(token, cell);
         jeton->value.ref = ref;
-        cell->listeCellule = list_append(ref->listeCellule, ref);
+        cell->listeCellule = list_insert(ref->listeCellule, ref);
     }
     //si c'est un operateur
     else{

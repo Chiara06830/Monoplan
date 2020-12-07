@@ -56,5 +56,5 @@ int testCellule(){
     //qui ne font pas partie de la liste
     refInconnu = lecture_cellule(refInconnu);
 
-    printf("//-----------FIN TESTES MODULE LISTE-----------//\n\n");
+    printf("//-----------FIN TESTES MODULE CELLULE-----------//\n\n");
 }

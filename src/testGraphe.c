@@ -1,6 +1,7 @@
 #include <stdio.h>
 
-#include "graphe.h"
+#include "../include/graphe.h"
+#include "../include/test.h"
 
 int testGraphe(){
     printf("\n//----------DEBUT TESTES MODULE GRAPHE---------//\n");

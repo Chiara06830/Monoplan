@@ -14,4 +14,5 @@ int main(){
     testStack();
     testListe();
     testCellule();
+    testGraphe();
 }
