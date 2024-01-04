@@ -1,12 +1,18 @@
 # Monoplan
 
-Tableur simplifié réaliser dans le cadre du module de programmation C avancé. (L3 II, Université de Bretagne Occidentale)
+Simplified spreadsheet made for the course of advanced C programmation at the University of Western Britany.
 
-## Compilation et Exécution
-Pour compiler il faut faire la commande `make` a la base de l'arboressence.
-Et pour éxécuter il faut éxecuter `Monoplan.exe`.
+## Compilation and Execution
+For compilation:
+```bash
+make
+```
+For execution:
+```bash
+Monoplan.exe
+```
 
-## Arboressence
+## Structure
 ```
  Monoplan :
 ├── include
@@ -31,26 +37,30 @@ Et pour éxécuter il faut éxecuter `Monoplan.exe`.
 
 
 ## Modules
-### Module Liste
-Composé de :
+### Module List
+Composed of:
 - liste.h
 - liste.c
 - testListe.c
 
-Permet de créer et manipulé une liste chainé de void *.
+Allow to create and manipulate a chained list of `void*`.
 
-### Module Cellules
-Composé de  :
+### Module Cell
+Composed of:
 - cellule.h
 - cellule.c
 - testCellule.c
 
-Lit le contenu d'une cellule et effectue le calcul quand s'en est un.
+Read a cell et calculate the value when it is a calculus.
 
-### Modules Graphe
-Composé de : 
+### Module Graph
+Composed of: 
 - graphe.c
 - graphe.h
 - testGraphe.c
 
 Evalue les cellules qui sont dépendantes les unes des autres.
+Evauluate cells that are interdependent.
+
+## Future work
+Make an graphic inteface.
